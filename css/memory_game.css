@@ -1,0 +1,55 @@
+body{
+    background-image: url('../images/internet.jpg');
+    background-size: cover;
+    overflow: hidden;
+    height: 100vh;
+    overflow-y: scroll;
+    font-family: 'Abril Fatface', cursive;
+
+}
+
+button{
+    background-color: yellow;
+    color: red;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.container{
+    position: relative;
+}
+
+
+.card{
+    border: 5px solid goldenrod;
+    height: 180px;
+    width: 125px;
+    background-size: contain;
+    margin: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+}
+
+h1{
+    font-size: 50px;
+    text-align:center;
+    color:black;
+    display: inline-block;
+}
+
+.click-disabled{
+    pointer-events: none;
+}
+
+.winner-div{
+    position: absolute;
+    color: red;
+    font-size:150px;
+    text-align: center;
+    margin-top: 150px;
+}
+
+#header{
+    text-align: center;
+}
