@@ -1,8 +1,10 @@
 var Memory = {};
 Memory.score = 0;
+Memory.wrong = 0;
 Memory.urls = [`url('./images/Toy_Story.jpg')`, `url('./images/Monster_inc.jpg')`, `url('./images/finding_nemo.jpeg')`, `url('./images/incredibles.jpg')`, `url('./images/up.jpg')`, `url('./images/wall-e.jpg')`, `url('./images/Toy_Story.jpg')`, `url('./images/Monster_inc.jpg')`, `url('./images/finding_nemo.jpeg')`, `url('./images/incredibles.jpg')`, `url('./images/up.jpg')`, `url('./images/wall-e.jpg')`];
 const len = Memory.urls.length
 
+// Distribute the deck
 Memory.distribute = function () {
     for (i = Memory.urls.length - 1; i >= 0; i--) {
         var randomSrc = Memory.urls[Math.floor(Math.random() * Memory.urls.length)];
@@ -15,6 +17,7 @@ Memory.distribute = function () {
     }
 }
 
+// Disable click if the card is already uncovered
 Memory.disableClick = function () {
     $(".card").click(function () {
         if ($(this).attr("src") != "./images/back.jpg") {
@@ -23,6 +26,7 @@ Memory.disableClick = function () {
     })
 }
 
+// Compare the uncovered cards and give a point if it matches
 Memory.compare = function () {
     var clicked = [];
     $('.card').click(function (event) {
@@ -39,6 +43,7 @@ Memory.compare = function () {
                     $('img').css("height", "170px");
                     $(".card").removeClass("click-disabled");
                 }, 1000);
+                Memory.wrong++;
             }
             else {
                 Memory.score++;
@@ -49,32 +54,43 @@ Memory.compare = function () {
     });
 }
 
+// Display a winner banner when the player has uncovered all the cards
 Memory.anounceWin = function () {
-
     $(".card").click(function () {
-        if (Memory.score === len/2) {
+        if (Memory.score === len / 2) {
             var winnerDiv = $("<div/>");
-            winnerDiv.text("To infinity and beyond!");
+            winnerDiv.text(`To infinity and beyond! Only ${Memory.wrong} wrong guesses...`);
             winnerDiv.addClass("winner-div");
             $('body').prepend(winnerDiv);
-            $('body').css("background-image","url('./images/piston_cup.jpg')");
-            $(".card").hide();
+            $('body').css("background-image", "url('./images/piston_cup.jpg')");
+            $(".card").remove();
+            $("#wrong-guesses").remove();
         }
     })
 }
 
+// Refresh page if the player clicks on the button "New game"
 Memory.newGame = function () {
     $('button').click(function () {
         location.reload();
     });
 }
 
-Memory.start = function(){
-    Memory.disableClick();
-    Memory.distribute();
-    Memory.compare();
-    Memory.anounceWin();
-    Memory.newGame();
+Memory.wrongGuesses = function () {
+    $('.card').click(function () {
+        $('#wrong-guesses').text(`Wrong guesses: ${Memory.wrong}`)
+    })
+}
+
+Memory.start = function () {
+    $(document).ready(function () {
+        Memory.disableClick();
+        Memory.distribute();
+        Memory.compare();
+        Memory.anounceWin();
+        Memory.newGame();
+        Memory.wrongGuesses();
+    })
 }
 
 Memory.start();
